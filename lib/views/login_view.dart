@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:fluttering/constants/routes.dart';
+import '../utilities/show_error_dailog.dart';
 
 
 class LoginView extends StatefulWidget {
@@ -74,16 +73,21 @@ class _LoginViewState extends State<LoginView> {
                 }
                 on FirebaseAuthException catch(e){
                   if(e.code=='user-not-found'){
-                    devtools.log('Email not registered');
+                    showErrorDdailog(context, 'Email not registered');
                   }
                   else if (e.code=='wrong-password'){
-                    devtools.log('Wrong password');
+                    showErrorDdailog(context, 'Wrong Password');
                   }
                   else if (e.code=='invalid-email'){
-                    devtools.log('Invalid  email');
+                    showErrorDdailog(context, 'Invalid Email Address Format');
+                  }
+                  else{
+                    showErrorDdailog(context, 'Error: ${e.code}');
                   }
                 }
-                  
+                  catch(e){
+                    showErrorDdailog(context, e.toString());
+                  }
                 },
               child: const Text('LOGIN'),
               ),
@@ -98,6 +102,8 @@ class _LoginViewState extends State<LoginView> {
               child: const Text('Note registered? Register Here'))
             ],
           ),
-   );
-  }
+      );
+    }
   }  
+
+  
